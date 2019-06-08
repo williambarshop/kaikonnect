@@ -10,7 +10,9 @@ import sys
 import time
 import os.path
 
-input_folder="."
+#THIS FILE TAKEN FROM PNNL KAIKO PROJECT
+
+input_folder="/mzml_input_files/" #This will be set statically to work inside our docker containers
 
 def inspect_mzML_file(fpath):
     spectra = []
