@@ -73,7 +73,7 @@ def generate_mgf_without_annotation(mzml_spectra, file_index=0, out_file='out.mg
                     
         return num_spectra
 
-def generate_mgf_files(data_dir, dest_dir='./'):
+def generate_mgf_files(data_dir, dest_dir=input_folder):
     # collect mzML files
     mzML_files = glob.glob(data_dir + "/*.mzML")
     

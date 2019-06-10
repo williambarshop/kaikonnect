@@ -26,7 +26,7 @@ parser.add_option("-f","--fasta",action="store",type="string",dest="fasta_file")
 
 #KAIKO OPTIONS
 parser.add_option("--kaiko_topk",action="store",type="int",dest="kaiko_topk",default=1)
-parser.add_option("--kaiko_beam_size",action="store",type="float",dest="kaiko_beam_size")
+parser.add_option("--kaiko_beam_size",action="store",type="int",dest="kaiko_beam_size",default=5)
 #parser.add_option("--best_prop_pep",action="store",type="float",dest="best_prop_pep")
 
 
@@ -123,8 +123,9 @@ if not os.path.isdir(os.path.join(starting_dir,"Kaiko/")):
     print "\n\nERROR: We can't find the Kaiko folder! Please make sure:\n1. You are running this script from the kaikonnect basedir folder\n2. You have run the \'tag_grab.sh\' setup script!"
     sys.exit(2)
 
-os.system("{0}docker run --rm -v {1}:/app/model -v {2}:/app/mgf_input -v {2}/decode_output:/app/decode_output kaiko /bin/bash -c \"python ./src/kaiko_main.py --mgf_dir mgf_input/ --train_dir model/ --multi_decode --beam_search --beam_size {3}".format(sudo_str,os.path.join(starting_dir,"Kaiko/model/kaiko_model/"),full_output_dir,options.kaiko_beam_size))
-
+tmp_cmd_str="{0}docker run --rm -v {1}:/app/model -v {2}:/app/mgf_input -v {2}/decode_output:/app/decode_output kaiko /bin/bash -c \"python ./src/kaiko_main.py --mgf_dir mgf_input/ --train_dir model/ --multi_decode --beam_search --beam_size {3} --topk {4}\"".format(sudo_str,os.path.join(starting_dir,"Kaiko/model/"),full_output_dir,options.kaiko_beam_size,options.kaiko_topk)
+print "About to execute command {0}".format(tmp_cmd_str)
+os.system(tmp_cmd_str)
 #sudo_str
 #os.path.join(starting_dir,"Kaiko/model/kaiko_model/")
 #full_output_dir
