@@ -1,0 +1,11 @@
+name: python2
+#channels:
+# — defaults
+dependencies:
+ - python=2.7
+ - pip
+ - pip:
+   - pandas
+   - pyteomics
+   - lxml
+   - tqdm
