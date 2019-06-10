@@ -1,4 +1,3 @@
-import pandas as pd
 import sys
 import re
 import time
@@ -12,7 +11,7 @@ import os.path
 
 #THIS FILE TAKEN FROM PNNL KAIKO PROJECT
 
-input_folder="/mzml_input_files/" #This will be set statically to work inside our docker containers
+input_folder="/mzml_input/" #This will be set statically to work inside our docker containers
 
 def inspect_mzML_file(fpath):
     spectra = []
