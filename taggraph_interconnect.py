@@ -26,7 +26,8 @@ def ingest_mzML(input_file):
     for each_scan in tqdm(mzml_reader):
         if each_scan['ms level']==2:
             this_scan={}
-            this_scan['scan']=int(each_scan['index'])+1
+            #this_scan['scan']=int(each_scan['index'])+1 #Turns out, sometimes people use truncated files so this isn't a good plan.
+            this_scan['scan']=int(each_scan['id'].rsplit("=",1)[1]) #Instead, we'll take scan number from the scan id string.
             this_scan['z']=each_scan['precursorList']['precursor'][0]['selectedIonList']['selectedIon'][0]['charge state']
             this_scan['m/z']=each_scan['precursorList']['precursor'][0]['selectedIonList']['selectedIon'][0]['selected ion m/z']
             this_scan["RT"]=each_scan['scanList']['scan'][0]['scan start time']
