@@ -35,7 +35,7 @@ output         = {REPLACE_ExperimentName}/EM_output
 init           = resources/TAG_GRAPH_Tryp_CysCarbam_MetOx.ini
 
 # Location and name of fmindex to search.  This fmindex location should include multiple related files as described in the README. 
-fmindex        = resources/FMIndices/20141209_UniHUMAN_cRAP_ILEq.fm
+fmindex        = /taggraph_input/{REPLACE_fasta_base}.fm
 
 # Expected standard deviation in ppm error distributions of fragment ions. Recommend 5 for HCD 30,000 resolution
 ppmstd         = 10

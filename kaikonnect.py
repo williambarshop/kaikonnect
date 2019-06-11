@@ -192,3 +192,27 @@ for each_mzml in glob.glob(os.path.join(os.path.join(full_mzml_dir,"decode_outpu
 
 #We'll also make a folder for the taggraph config...
 makeDirCheck(os.path.join(full_output_dir,"decode_output/taggraph_input/config/"))
+#copy the template, and we'll run some sed commands to replace with proper values...
+tg_params_path=os.path.join(full_output_dir,"decode_output/taggraph_input/config/tg_template.params")
+shutil.copy(os.path.join(starting_dir,"tg_template.params"),tg_params_path)
+
+#Now we'll copy the fasta file into place...
+tg_fasta_location=os.path.join(full_output_dir,"decode_output/taggraph_input/",os.path.basename(options.fasta))
+shutil.copy(options.fasta,tg_fasta_location)
+#and we'll have to generate the FMindex for this fasta...
+
+tag_graph_options={"{REPLACE_outputPerFraction}":options.tg_outputPerFraction,"{REPLACE_FDRCutoff}":options.tg_FDRCutoff,"{REPLACE_logEMCutoff}":options.tg_logEMCutoff,"{REPLACE_DisplayProteinNum}":options.tg_DisplayProteinNum,"{REPLACE_ExperimentName}":options.tg_ExperimentName,"{REPLACE_fasta_base}":os.path.basename(options.fasta).rsplit(".",1)[0]+".fm"}
+
+for each_option in tag_graph_options.keys:
+    each_value=tag_graph_options[each_option]
+    os.system("sed -i \'s/{0}/{1}/\' {2}".format(each_option,each_value,tg_params_path))
+print "\n\n\nPROGRESS: The TagGraph configuration file has been generated at {0}".format(tg_params_path)
+
+
+
+print "\n\n\n=================== TagGraph Execution is now starting. ===================\n\n\n"
+
+
+cmd_str_tmp="{0}docker run --rm -v {1}/decode_output/:/kaiko_output/ kaikonnect bash -c \"source activate python2 && python /kaikonnect/taggraph_interconnect.py\"".format(sudo_str, full_output_dir)
+print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
+os.system(cmd_str_tmp)
