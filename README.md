@@ -15,7 +15,7 @@ and change into the new directory...
 ``` cd kaikonnect/ ```
 
 ### Second, docker builds and downloads:
-This interconnect will bind Kaiko (the PNNL variant of DeepNovo) and the Elias lab's TagGraph softwares together.
+This interconnect will bind [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) (the PNNL variant of DeepNovo) and the Elias lab's [TagGraph](https://sourceforge.net/projects/taggraph/) softwares together.
 Accordingly, both will need to be downloaded.  For Kaiko, we will also download the default model from MassIVE over FTP.  If you are attempting to connect from within a controlled environment, you may find it necessary to stage the model manually.  Please refer to the ``` tag_grab.sh ``` script for the relevant URLs.
 
 To download all necessary components, and build the docker images, run:
@@ -48,4 +48,12 @@ Options:
   --tg_FDR_cutoff=TG_FDRCUTOFF
   --tg_logEM_cutoff=TG_LOGEMCUTOFF
   --tg_Display_Protein_Num=TG_DISPLAYPROTEINNUM
-  --tg_ExperimentName=TG_EXPERIMENTNAME ```
+  --tg_ExperimentName=TG_EXPERIMENTNAME
+  --tg_ppmstd=TG_PPMSTD
+  --tg_modtolerance=TG_MODTOLERANCE
+  --tg_maxcounts=TG_MAXCOUNTS
+  --tg_modmaxcounts=TG_MODMAXCOUNTS
+  --tg_EMinitIterations=TG_EMINITITERATIONS
+  --tg_EMmaxIterations=TG_EMMAXITERATIONS
+ ```
+ Please refer to [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) and [TagGraph](https://sourceforge.net/projects/taggraph/) for details about the argument implementations.
