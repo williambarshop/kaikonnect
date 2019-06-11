@@ -225,4 +225,4 @@ print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
 
 print "\n\n\n=================== TagGraph Execution is now finished. ===================\n\n\n"
-print "Relevant outputs should be available under the folder: {0}".format(full_output_dir)
+print "Relevant outputs should be available under the folder: {0}".format(os.path.join(full_output_dir,"decode_output/taggraph_input/"))
