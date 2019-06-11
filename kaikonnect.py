@@ -24,24 +24,21 @@ parser.add_option("-s","--no_sudo",action="store_false",dest="no_sudo",default=F
 parser.add_option("-r","--raw_folder",action="store",type="string",dest="raw_folder") #If this has a value, we'll convert Thermo raw files to mzML using a docker container and place them inside the mzml folder
 parser.add_option("-m","--mzML_folder",action="store",type="string",dest="mzml_folder")
 parser.add_option("-o","--output_folder",action="store",type="string",dest="output_folder")
-parser.add_option("-f","--fasta",action="store",type="string",dest="fasta_file")
 
 
 #KAIKO OPTIONS
 parser.add_option("--kaiko_topk",action="store",type="int",dest="kaiko_topk",default=1)
 parser.add_option("--kaiko_beam_size",action="store",type="int",dest="kaiko_beam_size",default=5)
-#parser.add_option("--best_prop_pep",action="store",type="float",dest="best_prop_pep")
 
 
 #TAG_GRAPH OPTIONS
-parser.add_option("--tg_per_fraction",action="store_false",dest="tg_outputPerFraction",default=False)
-parser.add_option("--tg_FDR_cutoff",action="store",type="float",dest="tg_FDRCutoff",default=0.01)
+parser.add_option("-f","--fasta",action="store",type="string",dest="fasta_file")
 
+parser.add_option("--tg_per_fraction",action="store_true",dest="tg_outputPerFraction",default=False)
+parser.add_option("--tg_FDR_cutoff",action="store",type="float",dest="tg_FDRCutoff",default=0.01)
 parser.add_option("--tg_logEM_cutoff",action="store",type="int",dest="tg_logEMCutoff",default=2)
 parser.add_option("--tg_Display_Protein_Num",action="store",type="int",dest="tg_DisplayProteinNum",default=3)
 parser.add_option("--tg_ExperimentName",action="store",type="string",dest="tg_ExperimentName",default="Expt_{0}".format(time.strftime("%Y-%m-%d_%H-%M")))
-
-
 
 
 (options,args) = parser.parse_args()
@@ -188,7 +185,8 @@ os.system(cmd_str_tmp)
 for each_mzml in glob.glob(os.path.join(os.path.join(full_mzml_dir,"decode_output/"),"*.mzML")):
     os.rename(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
 
-
+#For later reference...
+tg_input_dir=os.path.join(full_output_dir,"decode_output/taggraph_input/")
 
 #We'll also make a folder for the taggraph config...
 makeDirCheck(os.path.join(full_output_dir,"decode_output/taggraph_input/config/"))
@@ -201,18 +199,19 @@ tg_fasta_location=os.path.join(full_output_dir,"decode_output/taggraph_input/",o
 shutil.copy(options.fasta,tg_fasta_location)
 #and we'll have to generate the FMindex for this fasta...
 
+#This dict holds the replacement options k:v pairs to sed into the staged config file
 tag_graph_options={"{REPLACE_outputPerFraction}":options.tg_outputPerFraction,"{REPLACE_FDRCutoff}":options.tg_FDRCutoff,"{REPLACE_logEMCutoff}":options.tg_logEMCutoff,"{REPLACE_DisplayProteinNum}":options.tg_DisplayProteinNum,"{REPLACE_ExperimentName}":options.tg_ExperimentName,"{REPLACE_fasta_base}":os.path.basename(options.fasta).rsplit(".",1)[0]+".fm"}
 
 for each_option in tag_graph_options.keys:
     each_value=tag_graph_options[each_option]
-    os.system("sed -i \'s/{0}/{1}/\' {2}".format(each_option,each_value,tg_params_path))
+    sed_cmd="sed -i \'s/{0}/{1}/\' {2}".format(each_option,each_value,tg_params_path)
+    print "\nAbout to execute command: {0}".format(sed_cmd)
+    os.system(sed_cmd)
 print "\n\n\nPROGRESS: The TagGraph configuration file has been generated at {0}".format(tg_params_path)
-
-
 
 print "\n\n\n=================== TagGraph Execution is now starting. ===================\n\n\n"
 
-
-cmd_str_tmp="{0}docker run --rm -v {1}/decode_output/:/kaiko_output/ kaikonnect bash -c \"source activate python2 && python /kaikonnect/taggraph_interconnect.py\"".format(sudo_str, full_output_dir)
+cmd_str_tmp="{0}docker run --rm -v {1}:/taggraph_input/ taggraph bash -c \"python scripts/Build_FMIndex_new.py -f {2} -o {3} && ls && python runTG.py /taggraph_input/config/tg_template.params\"".format(sudo_str, tg_input_dir, "/taggraph_input/{0}".format(os.path.basename(options.fasta)), "/taggraph_input/")
 print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
+
