@@ -1,5 +1,5 @@
 # Kaikonnect
-A wrapper to server as an interconnect between Kaiko and TagGraph for open modification searching.
+A wrapper to server as an interconnect between [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) and [TagGraph](https://sourceforge.net/projects/taggraph/) for peptide open modification searching.
 Thanks to the structures of Kaiko and TagGraph, Kaikonnect is capable of taking in several .mzML or Thermo .raw simultaneously for joint analysis.
 
 ## Prerequisites:
@@ -15,7 +15,7 @@ and change into the new directory...
 ``` cd kaikonnect/ ```
 
 ### Second, docker builds and downloads:
-This interconnect will bind Kaiko (the PNNL variant of DeepNovo) and the Elias lab's TagGraph softwares together.
+This interconnect will bind [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) (the PNNL variant of DeepNovo) and the Elias lab's [TagGraph](https://sourceforge.net/projects/taggraph/) softwares together.
 Accordingly, both will need to be downloaded.  For Kaiko, we will also download the default model from MassIVE over FTP.  If you are attempting to connect from within a controlled environment, you may find it necessary to stage the model manually.  Please refer to the ``` tag_grab.sh ``` script for the relevant URLs.
 
 To download all necessary components, and build the docker images, run:
@@ -29,6 +29,9 @@ If using Thermo instrument data, Kaikonnect will use the available pwiz docker i
 An example command line, with the provided data **(staged when running tag_grab.sh)**:
 
 ``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/human_uniprot_12092014_crap.fasta ```
+
+or more simply, by executing...
+```sh test_script.sh```
 
 For additional configuration options, run:
 ```
@@ -48,4 +51,12 @@ Options:
   --tg_FDR_cutoff=TG_FDRCUTOFF
   --tg_logEM_cutoff=TG_LOGEMCUTOFF
   --tg_Display_Protein_Num=TG_DISPLAYPROTEINNUM
-  --tg_ExperimentName=TG_EXPERIMENTNAME ```
+  --tg_ExperimentName=TG_EXPERIMENTNAME
+  --tg_ppmstd=TG_PPMSTD
+  --tg_modtolerance=TG_MODTOLERANCE
+  --tg_maxcounts=TG_MAXCOUNTS
+  --tg_modmaxcounts=TG_MODMAXCOUNTS
+  --tg_EMinitIterations=TG_EMINITITERATIONS
+  --tg_EMmaxIterations=TG_EMMAXITERATIONS
+ ```
+ Please refer to [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) and [TagGraph](https://sourceforge.net/projects/taggraph/) for details about the argument implementations.

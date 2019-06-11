@@ -21,7 +21,7 @@ for each_package in package_list:
 
 ##### ARGUMENT PARSING #####
 parser = optparse.OptionParser()
-parser.add_option("-s","--no_sudo",action="store_false",dest="no_sudo",default=False) #False means don't use sudo.  This will depend on how users are given permission to access the docker host
+parser.add_option("-s","--no_sudo",action="store_true",dest="no_sudo",default=False) #False means don't use sudo.  This will depend on how users are given permission to access the docker host
 parser.add_option("-r","--raw_folder",action="store",type="string",dest="raw_folder") #If this has a value, we'll convert Thermo raw files to mzML using a docker container and place them inside the mzml folder
 parser.add_option("-m","--mzML_folder",action="store",type="string",dest="mzml_folder")
 parser.add_option("-o","--output_folder",action="store",type="string",dest="output_folder")
