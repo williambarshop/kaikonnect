@@ -10,7 +10,7 @@ from pyteomics import mass
 input_path="/kaiko_output/"
 output_path="/kaiko_output/taggraph_input/"
 
-if not os.isdir(output_path):
+if not os.path.isdir(output_path):
     try:
         os.mkdir(output_path)
     except:
