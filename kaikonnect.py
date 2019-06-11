@@ -19,6 +19,19 @@ for each_package in package_list:
 
 
 
+
+#For needing to run a bunch of docker containers (which we're doing on the command line for now, will move to Docker pyAPI later...)
+#we will need root.  So, while I have sudo lines in here where necessary, I'm going to throw a strongly worded warning if a user
+#executes me without root access.
+current_uid=os.getuid() #find user id, 0 is root
+if str(current_uid) is not "0":
+    print "\n\n\n>>>> WARNING: This script is most easily run as root.  If not, you may experience hangs waiting for sudo password input between major steps of the workflow <<<<\n"
+    raw_input("Please press enter to continue:")
+
+
+
+
+
 ##### ARGUMENT PARSING #####
 parser = optparse.OptionParser()
 parser.add_option("-s","--no_sudo",action="store_true",dest="no_sudo",default=False) #False means don't use sudo.  This will depend on how users are given permission to access the docker host
