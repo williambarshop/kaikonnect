@@ -115,4 +115,4 @@ for each_file in tqdm(combined_df['File'].unique()):
         new_rows.append(out_row)
     #final_df.to_csv(each_file+"_mockPEAKS.csv")
 final_df=pandas.DataFrame(new_rows)
-final_df.to_csv("combined_mockPEAKS_input.csv")
+final_df.to_csv(os.path.join(output_path,"combined_mockPEAKS_input.csv"))

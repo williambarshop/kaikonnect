@@ -6,6 +6,16 @@ chmod +x ${PWD}/build_docker.sh && \
 sudo ${PWD}/build_docker.sh && \
 wget https://sourceforge.net/projects/taggraph/files/Current%20Release/DockerContainer/linux/CentosDockerTG.1.7.1.tar.gz/download -O tg_docker.tar.gz && \
 tar xzvf tg_docker.tar.gz && \
+rm tg_docker.tar.gz && \
+wget https://sourceforge.net/projects/taggraph/files/Current%20Release/samplefiles.1.7.01.tar.gz/download -O example/tg_examples.tar.gz && \
+mkdir example && \
+cd example/ && \
+mkdir mzml_files && \
+tar xzvf tg_examples.tar.gz && \
+rm tg_examples.tar.gz && \
+mv samples/sampleInputFiles/mzML/ mzml_files/
+mv samples/sampleInputFiles/FMIndices/human_uniprot_12092014_crap.fasta . && \
+rm -rf samples/ && \
 cd CentosDockerTG.1.7.1 && \
 chmod +x ${PWD}/build.sh && \
 sudo ./build.sh && \
