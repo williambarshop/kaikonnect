@@ -3,6 +3,7 @@ A wrapper to serve as an interconnect between [Kaiko](https://github.com/PNNL-Co
 Thanks to the structures of Kaiko and TagGraph, Kaikonnect is capable of taking in several .mzML or Thermo .raw simultaneously for joint analysis.
 
 ## Prerequisites:
+A linux machine with:
 1. Docker
 2. Python 2.7
 3. optparse for python 2.7 (this should be installed automatically via pip during execution if not found)
