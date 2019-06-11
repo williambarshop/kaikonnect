@@ -19,27 +19,24 @@ for each_package in package_list:
 
 
 
+##### ARGUMENT PARSING #####
 parser = optparse.OptionParser()
 parser.add_option("-s","--no_sudo",action="store_false",dest="no_sudo",default=False) #False means don't use sudo.  This will depend on how users are given permission to access the docker host
 parser.add_option("-r","--raw_folder",action="store",type="string",dest="raw_folder") #If this has a value, we'll convert Thermo raw files to mzML using a docker container and place them inside the mzml folder
 parser.add_option("-m","--mzML_folder",action="store",type="string",dest="mzml_folder")
 parser.add_option("-o","--output_folder",action="store",type="string",dest="output_folder")
 
-
 #KAIKO OPTIONS
 parser.add_option("--kaiko_topk",action="store",type="int",dest="kaiko_topk",default=1)
 parser.add_option("--kaiko_beam_size",action="store",type="int",dest="kaiko_beam_size",default=5)
 
-
 #TAG_GRAPH OPTIONS
 parser.add_option("-f","--fasta",action="store",type="string",dest="fasta")
-
 parser.add_option("--tg_per_fraction",action="store_true",dest="tg_outputPerFraction",default=False)
 parser.add_option("--tg_FDR_cutoff",action="store",type="float",dest="tg_FDRCutoff",default=0.01)
 parser.add_option("--tg_logEM_cutoff",action="store",type="int",dest="tg_logEMCutoff",default=2)
 parser.add_option("--tg_Display_Protein_Num",action="store",type="int",dest="tg_DisplayProteinNum",default=3)
 parser.add_option("--tg_ExperimentName",action="store",type="string",dest="tg_ExperimentName",default="Expt_{0}".format(time.strftime("%Y-%m-%d_%H-%M")))
-
 parser.add_option("--tg_ppmstd",action="store",type="int",dest="tg_ppmstd",default=10)
 parser.add_option("--tg_modtolerance",action="store",type="float",dest="tg_modtolerance",default=0.1)
 parser.add_option("--tg_maxcounts",action="store",type="int",dest="tg_maxcounts",default=400)
@@ -50,17 +47,12 @@ parser.add_option("--tg_EMmaxIterations",action="store",type="int",dest="tg_EMma
 
 (options,args) = parser.parse_args()
 
-
-
 def makeDirCheck(dir_to_make): #Helper function for making directories if they don't exist....
     if not os.path.isdir(dir_to_make):
         try:
             os.mkdir(dir_to_make)
         except:
             print "\n\nERROR: Failed to make directory {0} !\nPlease ensure that you have rights to make this directory, or that it isn\'t a file already.".format(dir_to_make)
-
-
-
 
 #Let's establish the starting directory...
 starting_dir=os.getcwd()
@@ -83,11 +75,6 @@ if options.mzml_folder is None:
     sys.exit(2)
 else:
     makeDirCheck(options.mzml_folder)
-#    if not os.path.isdir(options.mzml_folder):
-#        try:
-#            os.mkdir(options.mzml_folder)
-#        except:
-#            print "\n\nERROR: Failed to make directory {0} !\nPlease ensure that you have rights to make this directory, or that it isn\'t a file already.".format(options.mzml_folder)
 
 os.chdir(options.mzml_folder)
 full_mzml_dir=os.getcwd() #For later reference...
@@ -100,11 +87,6 @@ if options.output_folder is None:
     sys.exit(2)
 else:
     makeDirCheck(options.output_folder)
-#    if not os.path.isdir(options.output_folder):
-#        try:
-#            os.mkdir(options.output_folder)
-#        except:
-#            print "\n\nERROR: Failed to make directory {0} !\nPlease ensure that you have rights to make this directory, or that it isn\'t a file already.".format(options.output_folder)
 
 os.chdir(options.output_folder)
 full_output_dir=os.getcwd() #For later reference...
@@ -136,7 +118,6 @@ full_path_mzml=os.getcwd()
 cmd_str_tmp="{0}docker run --rm -v {1}:/mzml_input/ kaikonnect bash -c \"source activate python3 && python /kaikonnect/convert_mzml.py\"".format(sudo_str, full_mzml_dir)
 print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
-#os.system("{0}docker run -v {1}:/mzml_input/ kaikonnect /bin/bash -c \"source python3 && python /kaikonnect/convert_mzml.py\"".format(sudo_str, full_mzml_dir))
 #Move mgf file(s) to output dir... Will feed to Kaiko...
 for each_mgf in glob.glob("*.mgf"):
     os.rename(each_mgf,os.path.join(full_output_dir,each_mgf))
@@ -157,13 +138,8 @@ if not os.path.isdir(os.path.join(starting_dir,"Kaiko/")):
 print "\n\n\n=================== Kaiko Execution is now starting. ===================\n\n\n"
 
 
-
+#Make the directory to hold the Kaiko outputs
 makeDirCheck(os.path.join(full_output_dir,"decode_output/"))
-#if not os.path.isdir(os.path.join(full_output_dir,"decode_output/")):
-#    try:
-#        os.mkdir(os.path.join(full_output_dir,"decode_output/"))
-#    except:
-#        print "\n\nERROR: Failed to make directory {0} !\nPlease ensure that you have rights to make this directory, or that it isn\'t a file already.".format(os.path.join(full_output_dir,"decode_output/"))
 
 
 tmp_cmd_str="{0}docker run --rm -v {1}:/app/model -v {2}:/app/mgf_input -v {2}/decode_output:/app/decode_output kaiko /bin/bash -c \"python ./src/kaiko_main.py --mgf_dir mgf_input/ --train_dir model/ --multi_decode --beam_search --beam_size {3} --topk {4}\"".format(sudo_str,os.path.join(starting_dir,"Kaiko/model/"),full_output_dir,options.kaiko_beam_size,options.kaiko_topk)
@@ -184,20 +160,12 @@ for each_mzml in glob.glob(os.path.join(full_mzml_dir,"*.mzML")):
 tg_input_dir=os.path.join(full_output_dir,"decode_output/taggraph_input/")
 makeDirCheck(tg_input_dir)
 
-#if not os.path.isdir(os.path.join(full_output_dir,"decode_output/taggraph_input/")):
-#    try:
-#        os.mkdir(os.path.join(full_output_dir,"decode_output/taggraph_input/"))
-#    except:
-#        print "\n\nERROR: Failed to make directory {0} !\nPlease ensure that you have rights to make this directory, or that it isn\'t a file already.".format(os.path.join(full_output_dir,"decode_output/taggraph_input/"))
-
 cmd_str_tmp="{0}docker run --rm -v {1}/decode_output/:/kaiko_output/ kaikonnect bash -c \"source activate python2 && python /kaikonnect/taggraph_interconnect.py\"".format(sudo_str, full_output_dir)
 print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
 
 #Move those mzml copies into the taggraph input folder to allow taggraph to have a go at them....
 print "about to stage mzML files..."
-#print glob.glob(os.path.join(os.path.join(full_mzml_dir,"decode_output/"),"*.mzML")),"the glob!"
-#print "from folder {0}".format(os.path.join(os.path.join(full_mzml_dir,"decode_output/")))
 for each_mzml in glob.glob(os.path.join(os.path.join(full_output_dir,"decode_output/"),"*.mzML")):
     print "moving file {0} to {1}".format(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
     os.rename(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
@@ -237,7 +205,7 @@ print "\n\n\nPROGRESS: The TagGraph configuration file has been generated at {0}
 
 print "\n\n\n=================== TagGraph Execution is now starting. ===================\n\n\n"
 
-#cmd_str_tmp="{0}docker run --rm -v {1}:/taggraph_input/ inf/taggraph bash -c \"python scripts/Build_FMIndex_new.py -f {2} -o {3} && ls && python runTG.py /taggraph_input/config/tg_template.params\"".format(sudo_str, tg_input_dir, "/taggraph_input/{0}".format(os.path.basename(options.fasta)), "/taggraph_input/")
+#This command will build the FMIndex for the provided database, and then execute TagGraph on the resulting file with args as provided in the configuration file.
 cmd_str_tmp="{0}docker run --rm -v {1}:/taggraph_input/ inf/taggraph bash -c \"cd /taggraph_input/ && python /opt/bio/tools/taggraph/TagGraph.1.7.1/scripts/BuildFMIndex.py -f {2} && ls && cd /opt/bio/tools/taggraph/TagGraph.1.7.1 && python runTG.py /taggraph_input/config/tg_template.params\"".format(sudo_str, tg_input_dir, "/taggraph_input/{0}".format(os.path.basename(options.fasta)), "/taggraph_input/")
 print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
