@@ -28,7 +28,7 @@ If using Thermo instrument data, Kaikonnect will use the available pwiz docker i
 
 An example command line, with the provided data **(staged when running tag_grab.sh)**:
 
-``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/ex.fasta ```
+``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/human_uniprot_12092014_crap.fasta ```
 
 For additional configuration options, run:
 ```
