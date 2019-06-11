@@ -26,12 +26,15 @@ When prompted, enter root password to elevate access for "sudo" commands.  This 
 ### Third, let's execute Kaikonnect!
 If using Thermo instrument data, Kaikonnect will use the available pwiz docker image to convert the raw data to mzML through msconvert under wine.  Otherwise, we can take in mzML files directly.  In all cases, users are required to provide the mzML_folder argument.  This argument will either be used as the data input, or as the mzML file output after conversion.
 
+As Kaikonnect handles the execution of several docker containers, it is common that root privileges are required.
+It is easiest, therefore, to run the whole python script under root or through sudo.  If this is not done, and the --no_sudo flag is not thrown, a warning message will be displayed which a user can press <enter> through to ignore.  Users in this situation may find themselves prompted for sudo passwords multiple times throughout the execution of Kaikonnect, where progress hangs until a sudo password is supplied.
+
 An example command line, with the provided data **(staged when running tag_grab.sh)**:
 
-``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/human_uniprot_12092014_crap.fasta ```
+``` sudo python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/human_uniprot_12092014_crap.fasta ```
 
 or more simply, by executing...
-```sh test_script.sh```
+``` sudo sh test_script.sh```
 
 For additional configuration options, run:
 ```
