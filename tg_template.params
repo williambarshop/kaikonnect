@@ -38,18 +38,18 @@ init           = resources/TAG_GRAPH_Tryp_CysCarbam_MetOx.ini
 fmindex        = /taggraph_input/{REPLACE_fasta_base}.fm
 
 # Expected standard deviation in ppm error distributions of fragment ions. Recommend 5 for HCD 30,000 resolution
-ppmstd         = 10
+ppmstd         = {REPLACE_ppmstd}
 
 # Maximum absolute deviation (Da) between experimental and database modification mass for TagGraph to consider modification as a candidate match. Recommend 0.1.
-modtolerance   = 0.1
+modtolerance   = {REPLACE_modtolerance}
 
 # Maximum number of times a de novo-produced substring can occur in the protein sequence database for TagGraph to consider it as an unmodified peptide match.
 # Recommend less than 1,000 for single organism database (i.e., human uniprot) and 5,000 for nr or 6-frame translations
-maxcounts      = 400
+maxcounts      = {REPLACE_maxcounts}
 
 # Maximum number of times a de novo-produced substring can occur in the protein sequence database for TagGraph to consider it as a modified peptide match.
 # Recommend 200 for single organism database (i.e. human uniprot) and 1,000 for nr or 6-frame translations
-modmaxcounts   = 200
+modmaxcounts   = {REPLACE_modmaxcounts}
 
 # Location of pickled (python-serialized) unimod dictionary
 unimoddict     = resources/unimodDict_noLabels_20160724.pck
@@ -66,10 +66,10 @@ config         = resources/AllChargeDist_posOnlyDependence_20150808.txt
 ##### EM Settings #####
 [EM]
 # Number of iterations in initial EM over all results. Recommend 20 iterations.	
-initIterations = 20
+initIterations = {REPLACE_EMinitIterations}
 
 # Maximum number of expectation maximization iterations for FDR assignment. Recommend 100 iterations.
-maxIterations = 100
+maxIterations = {REPLACE_EMmaxIterations}
 
 # Filename Prefix to use for the output EM results files. Must not contain spaces.
 resultsPrefix = EM_Results

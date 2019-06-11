@@ -40,6 +40,13 @@ parser.add_option("--tg_logEM_cutoff",action="store",type="int",dest="tg_logEMCu
 parser.add_option("--tg_Display_Protein_Num",action="store",type="int",dest="tg_DisplayProteinNum",default=3)
 parser.add_option("--tg_ExperimentName",action="store",type="string",dest="tg_ExperimentName",default="Expt_{0}".format(time.strftime("%Y-%m-%d_%H-%M")))
 
+parser.add_option("--tg_ppmstd",action="store",type="int",dest="tg_ppmstd",default=10)
+parser.add_option("--tg_modtolerance",action="store",type="float",dest="tg_modtolerance",default=0.1)
+parser.add_option("--tg_maxcounts",action="store",type="int",dest="tg_maxcounts",default=400)
+parser.add_option("--tg_modmaxcounts",action="store",type="int",dest="tg_modmaxcounts",default=200)
+parser.add_option("--tg_EMinitIterations",action="store",type="int",dest="tg_EMinitIterations",default=20)
+parser.add_option("--tg_EMmaxIterations",action="store",type="int",dest="tg_EMmaxIterations",default=100)
+
 
 (options,args) = parser.parse_args()
 
@@ -208,7 +215,18 @@ shutil.copy(options.fasta,tg_fasta_location)
 #and we'll have to generate the FMindex for this fasta...
 
 #This dict holds the replacement options k:v pairs to sed into the staged config file
-tag_graph_options={"{REPLACE_outputPerFraction}":options.tg_outputPerFraction,"{REPLACE_FDRCutoff}":options.tg_FDRCutoff,"{REPLACE_logEMCutoff}":options.tg_logEMCutoff,"{REPLACE_DisplayProteinNum}":options.tg_DisplayProteinNum,"{REPLACE_ExperimentName}":options.tg_ExperimentName,"{REPLACE_fasta_base}":os.path.basename(options.fasta).rsplit(".",1)[0]}
+tag_graph_options={"{REPLACE_outputPerFraction}":options.tg_outputPerFraction, \
+                   "{REPLACE_FDRCutoff}":options.tg_FDRCutoff, \
+                   "{REPLACE_logEMCutoff}":options.tg_logEMCutoff, \
+                   "{REPLACE_DisplayProteinNum}":options.tg_DisplayProteinNum, \
+                   "{REPLACE_ExperimentName}":options.tg_ExperimentName, \
+                   "{REPLACE_fasta_base}":os.path.basename(options.fasta).rsplit(".",1)[0], \
+                   "{REPLACE_ppmstd}":options.tg_ppmstd, \
+                   "{REPLACE_modtolerance}":options.tg_modtolerance, \
+                   "{REPLACE_maxcounts}":options.tg_maxcounts, \
+                   "{REPLACE_modmaxcounts}":options.tg_modmaxcounts, \
+                   "{REPLACE_EMinitIterations}":options.tg_EMinitIterations, \
+                   "{REPLACE_EMmaxIterations}":options.tg_EMmaxIterations }
 
 for each_option in tag_graph_options.keys():
     each_value=tag_graph_options[each_option]
