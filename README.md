@@ -30,6 +30,9 @@ An example command line, with the provided data **(staged when running tag_grab.
 
 ``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/human_uniprot_12092014_crap.fasta ```
 
+or more simply, by executing...
+```sh test_script.sh```
+
 For additional configuration options, run:
 ```
 $ python kaikonnect.py --help
