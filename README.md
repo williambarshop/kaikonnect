@@ -26,7 +26,7 @@ When prompted, enter root password to elevate access for "sudo" commands.  This 
 ### Third, let's execute Kaikonnect!
 If using Thermo instrument data, Kaikonnect will use the available pwiz docker image to convert the raw data to mzML through msconvert under wine.  Otherwise, we can take in mzML files directly.  In all cases, users are required to provide the mzML_folder argument.  This argument will either be used as the data input, or as the mzML file output after conversion.
 
-An example command line, with the provided data:
+An example command line, with the provided data **(staged when running tag_grab.sh)**:
 
 ``` python kaikonnect.py --mzML_folder example/mzml_files/ --output_folder test_output/ --fasta example/ex.fasta ```
 
