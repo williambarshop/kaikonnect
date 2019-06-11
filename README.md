@@ -1,5 +1,5 @@
 # Kaikonnect
-A wrapper to server as an interconnect between Kaiko and TagGraph for open modification searching.
+A wrapper to server as an interconnect between [Kaiko](https://github.com/PNNL-Comp-Mass-Spec/Kaiko) and [TagGraph](https://sourceforge.net/projects/taggraph/) for open modification searching.
 Thanks to the structures of Kaiko and TagGraph, Kaikonnect is capable of taking in several .mzML or Thermo .raw simultaneously for joint analysis.
 
 ## Prerequisites:
