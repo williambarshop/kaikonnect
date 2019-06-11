@@ -13,7 +13,7 @@ cd example/ && \
 mkdir mzml_files && \
 tar xzvf tg_examples.tar.gz && \
 rm tg_examples.tar.gz && \
-mv samples/sampleInputFiles/mzML/ mzml_files/
+mv samples/sampleInputFiles/mzML/* mzml_files/
 mv samples/sampleInputFiles/FMIndices/human_uniprot_12092014_crap.fasta . && \
 rm -rf samples/ && \
 cd ../ && \
