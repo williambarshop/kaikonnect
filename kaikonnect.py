@@ -58,11 +58,15 @@ def makeDirCheck(dir_to_make): #Helper function for making directories if they d
 #Let's establish the starting directory...
 starting_dir=os.getcwd()
 
+#Check if we'll be using sudo...
 if options.no_sudo:
     sudo_str=""
 else:
     sudo_str="sudo "
 
+if options.fasta is None:
+    print "\n\nERROR: You'll need to supply a fasta location via \"--fasta {value}\""
+    sys.exit(2)
 
 #### CHECK FOR REQUIRED FOLDERS AND OPTIONS ####
 
