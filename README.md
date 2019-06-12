@@ -8,6 +8,8 @@ A linux machine with:
 2. Python 2.7
 3. optparse for python 2.7 (this should be installed automatically via pip during execution if not found)
 
+## Installation and Execution:
+
 ### First, clone the repo:
 ``` git clone https://github.com/wohllab/kaikonnect ```
 
