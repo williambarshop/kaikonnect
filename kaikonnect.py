@@ -116,7 +116,7 @@ if options.raw_folder is not None:
     for each_raw in glob.glob("*.raw"):
         print "PROGRESS: Going to execute...","{0}docker run --rm -e WINEDEBUG=-all -v {1}:/data chambm/pwiz-skyline-i-agree-to-the-vendor-licenses wine msconvert {2}".format(sudo_str, full_raw_path, each_raw)
         os.system("{0}docker run --rm -e WINEDEBUG=-all -v {1}:/data chambm/pwiz-skyline-i-agree-to-the-vendor-licenses wine msconvert {2}".format(sudo_str, full_raw_path, each_raw))
-        os.rename(each_raw.rsplit(".",1)[0]+".mzML",os.path.join(full_mzml_dir,each_raw.rsplit(".",1)[0]+".mzML"))
+        shutil.move(each_raw.rsplit(".",1)[0]+".mzML",os.path.join(full_mzml_dir,each_raw.rsplit(".",1)[0]+".mzML"))
     os.chdir(starting_dir)
 
 
@@ -132,7 +132,7 @@ print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
 #Move mgf file(s) to output dir... Will feed to Kaiko...
 for each_mgf in glob.glob("*.mgf"):
-    os.rename(each_mgf,os.path.join(full_output_dir,each_mgf))
+    shutil.move(each_mgf,os.path.join(full_output_dir,each_mgf))
 os.chdir(starting_dir)
 
 print "\n\n\nPROGRESS: All done with mgf conversion from mzML!"
@@ -180,7 +180,7 @@ os.system(cmd_str_tmp)
 print "about to stage mzML files..."
 for each_mzml in glob.glob(os.path.join(os.path.join(full_output_dir,"decode_output/"),"*.mzML")):
     print "moving file {0} to {1}".format(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
-    os.rename(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
+    shutil.move(each_mzml,os.path.join(os.path.join(full_output_dir,"decode_output/taggraph_input/"),each_mzml.rsplit("/",1)[1]))
 
 
 #We'll also make a folder for the taggraph config...
