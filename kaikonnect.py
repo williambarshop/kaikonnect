@@ -218,7 +218,7 @@ print "\n\n\nPROGRESS: The TagGraph configuration file has been generated at {0}
 print "\n\n\n=================== TagGraph Execution is now starting. ===================\n\n\n"
 
 #This command will build the FMIndex for the provided database, and then execute TagGraph on the resulting file with args as provided in the configuration file.
-cmd_str_tmp="{0}docker run --rm -v {1}:/taggraph_input/ inf/taggraph bash -c \"cd /taggraph_input/ && python /opt/bio/tools/taggraph/TagGraph.1.8.1/scripts/BuildFMIndex.py -f {2} && ls && cd /taggraph_input/ && cd /opt/bio/tools/taggraph/TagGraph.1.8.1/ && python runTG.py /taggraph_input/config/tg_template.params && mv /opt/bio/tools/taggraph/TagGraph.1.8.1/{3}/ /taggraph_input/{3}/  \"".format(sudo_str, tg_input_dir, "/taggraph_input/{0}".format(os.path.basename(options.fasta)),options.tg_ExperimentName)
+cmd_str_tmp="{0}docker run --rm -v {1}:/taggraph_input/ inf/taggraph bash -c \"cd /taggraph_input/ && chmod +x /opt/bio/tools/taggraph/TagGraph.1.8.1/lib/fmindex/fmbuild && python /opt/bio/tools/taggraph/TagGraph.1.8.1/scripts/BuildFMIndex.py -f {2} && ls && cd /taggraph_input/ && cd /opt/bio/tools/taggraph/TagGraph.1.8.1/ && python runTG.py /taggraph_input/config/tg_template.params && mv /opt/bio/tools/taggraph/TagGraph.1.8.1/{3}/ /taggraph_input/{3}/  \"".format(sudo_str, tg_input_dir, "/taggraph_input/{0}".format(os.path.basename(options.fasta)),options.tg_ExperimentName)
 print "\n\n\nPROGRESS: About to execute command : ",cmd_str_tmp,"\n\n\n"
 os.system(cmd_str_tmp)
 
