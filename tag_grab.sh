@@ -19,6 +19,7 @@ rm -rf sampleInputFiles.1.8.docker/ && \
 cd ../ && \
 cd CentosDockerTG.1.8.1 && \
 sed -i 's/pip install/pip install --upgrade pip \&\& pip install/' Dockerfile && \
+sed -i 's#tar -zxvf TagGraph.1.8.1.tar.gz#tar -zxvf TagGraph.1.8.1.tar.gz\nCOPY sampleInputFiles.1.8.docker/init/TAG_GRAPH_*.ini /opt/bio/tools/taggraph/TagGraph.1.8.1/resources/\n#' Dockerfile && \
 chmod +x ${PWD}/build.sh && \
 sudo ./build.sh && \
 cd .. && \
